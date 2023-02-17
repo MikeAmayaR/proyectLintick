@@ -68,12 +68,8 @@ class LintickController {
         dataUrlTwo
       );
       const finishDataWithName = dataWithName.data;
-      console.log('finishDataWithName', finishDataWithName)
       if (finishDataWithName) {
-        await LintickController.writeToFile(
-          "RickName.zip",
-          finishDataWithName
-        );
+        await LintickController.writeToFile("RickName.zip", finishDataWithName);
         response = {
           status: 202,
           code: "LT01",
@@ -105,10 +101,7 @@ class LintickController {
       );
       const finishDataWithType = dataWithType.data;
       if (finishDataWithType) {
-        await LintickController.writeToFile(
-          "RickType.zip",
-          finishDataWithType
-        );
+        await LintickController.writeToFile("RickType.zip", finishDataWithType);
         response = {
           status: 202,
           code: "LT01",
