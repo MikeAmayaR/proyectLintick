@@ -1,14 +1,16 @@
 import LintickServices from "../services/LintickServices.js";
+import fs from "fs/promises";
 
 const clas = "getData";
-
 class LintickController {
   static async getData(req, res) {
     let response;
     try {
       const dataGeneral = await LintickServices.getDataGeneral();
-      const finishData = dataGeneral.data.results
+      const finishData = dataGeneral.data.results;
+      console.log("finishData", finishData[0]);
       if (finishData) {
+        await LintickController.writeToFile("Rick.zip", finishData[0]);
         response = {
           status: 202,
           code: "LT01",
@@ -31,10 +33,10 @@ class LintickController {
 
   static async getDataWithId(req, res) {
     let response;
-    const dataUrl = parseInt(req.params.id)
+    const dataUrl = parseInt(req.params.id);
     try {
       const dataWithId = await LintickServices.getDataWithId(dataUrl);
-      const finishDataWithId = dataWithId.data
+      const finishDataWithId = dataWithId.data;
       if (finishDataWithId) {
         response = {
           status: 202,
@@ -58,11 +60,14 @@ class LintickController {
 
   static async getDataWithName(req, res) {
     let response;
-    const dataUrl = req.params.name
-    const dataUrlTwo = req.params.status
+    const dataUrl = req.params.name;
+    const dataUrlTwo = req.params.status;
     try {
-      const dataWithName = await LintickServices.getDataWithName(dataUrl, dataUrlTwo);
-      const finishDataWithName = dataWithName.data
+      const dataWithName = await LintickServices.getDataWithName(
+        dataUrl,
+        dataUrlTwo
+      );
+      const finishDataWithName = dataWithName.data;
       if (finishDataWithName) {
         response = {
           status: 202,
@@ -86,14 +91,17 @@ class LintickController {
 
   static async getDataWithType(req, res) {
     let response;
-    const dataUrl = req.params.species
-    console.log('dataUrl', dataUrl)
-    const dataUrlTwo = req.params.gender
-    console.log('dataUrlTwo', dataUrlTwo)
+    const dataUrl = req.params.species;
+    console.log("dataUrl", dataUrl);
+    const dataUrlTwo = req.params.gender;
+    console.log("dataUrlTwo", dataUrlTwo);
 
     try {
-      const dataWithType = await LintickServices.getDataWithType(dataUrl, dataUrlTwo);
-      const finishDataWithType= dataWithType.data
+      const dataWithType = await LintickServices.getDataWithType(
+        dataUrl,
+        dataUrlTwo
+      );
+      const finishDataWithType = dataWithType.data;
       if (finishDataWithType) {
         response = {
           status: 202,
@@ -112,6 +120,15 @@ class LintickController {
       return res.send(response);
     } catch (error) {
       console.log(clas, error);
+    }
+  }
+
+  static async writeToFile(fileName, data) {
+    try {
+      fs.writeFile(fileName, JSON.stringify(data));
+      console.log("The zip has been saved!");
+    } catch (error) {
+      console.error(`Got an error trying to write the file: ${error.message}`);
     }
   }
 }
