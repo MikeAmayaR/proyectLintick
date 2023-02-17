@@ -8,7 +8,6 @@ class LintickController {
     try {
       const dataGeneral = await LintickServices.getDataGeneral();
       const finishData = dataGeneral.data.results;
-      console.log("finishData", finishData[0]);
       if (finishData) {
         await LintickController.writeToFile("Rick.zip", finishData[0]);
         response = {
@@ -38,6 +37,7 @@ class LintickController {
       const dataWithId = await LintickServices.getDataWithId(dataUrl);
       const finishDataWithId = dataWithId.data;
       if (finishDataWithId) {
+        await LintickController.writeToFile("RickId.zip", finishDataWithId[0]);
         response = {
           status: 202,
           code: "LT01",
@@ -68,7 +68,12 @@ class LintickController {
         dataUrlTwo
       );
       const finishDataWithName = dataWithName.data;
+      console.log('finishDataWithName', finishDataWithName)
       if (finishDataWithName) {
+        await LintickController.writeToFile(
+          "RickName.zip",
+          finishDataWithName
+        );
         response = {
           status: 202,
           code: "LT01",
@@ -92,10 +97,7 @@ class LintickController {
   static async getDataWithType(req, res) {
     let response;
     const dataUrl = req.params.species;
-    console.log("dataUrl", dataUrl);
     const dataUrlTwo = req.params.gender;
-    console.log("dataUrlTwo", dataUrlTwo);
-
     try {
       const dataWithType = await LintickServices.getDataWithType(
         dataUrl,
@@ -103,6 +105,10 @@ class LintickController {
       );
       const finishDataWithType = dataWithType.data;
       if (finishDataWithType) {
+        await LintickController.writeToFile(
+          "RickType.zip",
+          finishDataWithType
+        );
         response = {
           status: 202,
           code: "LT01",
